@@ -1,0 +1,15 @@
+status code
+
+2XX --> success -->
+200 --> OK (In general)
+201 --> created (CREATE / POST)
+204 --> No content (DELETE)
+4XX --> mistake of client
+400 --> bad request (validation error, or something is missing which was required, ...)
+401 --> unauthorized (the user does not have permission)
+404 --> NOT FOUND (this you will mostly get in express app when the endpoint or route you are using is not attached on the app)
+you may send it when the user asked for something which is not present
+
+5XX --> mistake of server
+500 --> Internal Server Error (Something went wrong on server that code was not prepared for )
+(connection issue, ram outage, processor outage, or ...)
