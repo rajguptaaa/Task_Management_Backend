@@ -5,7 +5,7 @@ const morgan = require('morgan');
 const cors = require('cors');
 const jwt = require("jsonwebtoken");
 const { generateOtp } = require('./utils/optHelpers');
-const { sendOtpEmail } = require('./utils/emailHelpers');
+const { sendOtpEmail, sendReminderMail } = require('./utils/emailHelpers');
 const express = require('express');
 const app = express();
 const PORT = process.env.PORT || 1814;
@@ -14,6 +14,12 @@ const User = require('./models/userModel');
 const Task = require('./models/taskModel');
 const cookieParser = require('cookie-parser');
 
+const cron = require('node-cron');
+
+cron.schedule('* * * * *', () => {
+console.log('running a task every minute');
+// sendReminderMail("raajguptaa45@gmail.com", "Task 1");
+});
 //middlewares
 app.use(cors({ origin: process.env.FRONTEND_URL, credentials: true }));    //1st
 app.use(express.json()); //2nd
@@ -349,7 +355,8 @@ app.get("/users/logout", (req, res) => {
 
 app.get("/tasks",async (req, res) => {
     try {
-        const taskList =await Task.find();
+
+        const taskList = await Task.find().or([{ assignor: req.currUser.email }, { assignee: req.currUser.email }]);
         res.status(200);
         res.json({
             status: "success",

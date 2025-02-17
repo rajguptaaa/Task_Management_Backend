@@ -29,6 +29,26 @@ const sendEmail = async  (to, subject, html) => {
     return info;
 }
 
+
+const sendReminderMail = async  (to, subject, html) => {
+    try{const info = await transporter.sendMail({
+        from: '"Task Management App" <raajguptaa45@gmail.com>',
+        to,
+        subject,
+        html,
+    });
+
+    console.log(info.messageId);
+    return(true);
+}catch(err){
+    console.log("Error occured in sendEmail");
+    console.log(err.message);
+    return false;
+}
+    return info;
+}
+
+
 const sendOtpEmail =async (email, otp) => {
     const isEmailSent = await sendEmail(
         email,
@@ -40,4 +60,5 @@ const sendOtpEmail =async (email, otp) => {
 
 module.exports = {
     sendOtpEmail,
+    sendReminderMail,
 }
