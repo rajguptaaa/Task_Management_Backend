@@ -14,14 +14,16 @@ const User = require('./models/userModel');
 const Task = require('./models/taskModel');
 const cookieParser = require('cookie-parser');
 
-const cron = require('node-cron');
+// const cron = require('node-cron');
 
-cron.schedule('* * * * *', () => {
-console.log('running a task every minute');
-// sendReminderMail("raajguptaa45@gmail.com", "Task 1");
-});
+// cron.schedule('* * * * *', () => {
+// console.log('running a task every minute');
+// // sendReminderMail("raajguptaa45@gmail.com", "Task 1");
+// });
+
 //middlewares
-app.use(cors({ origin: process.env.FRONTEND_URL, credentials: true }));    //1st
+console.log(process.env.FRONTEND_URL);
+app.use(cors({ origin: process.env.FRONTEND_URL, methods: "GET,HEAD,PUT,PATCH,POST,DELETE", credentials: true }));    //1st
 app.use(express.json()); //2nd
 
 app.use((req, res, next) => { //3rd
@@ -29,18 +31,20 @@ app.use((req, res, next) => { //3rd
     next();
 })
 
+
+
+app.use(morgan("dev")); //4th ->get,post
+
 app.get('/', (req, res) => {
     res.send("<h1>Server Started</h1>")
 });
 
-app.use(morgan("dev")); //4th ->get,post
-
-app.use(
-    cors({
-        credentials: true,
-        origin: process.env.FRONTEND_URL,
-    })
-);
+// app.use(
+//     cors({
+//         credentials: true,
+//         origin: process.env.FRONTEND_URL,
+//     })
+// );
 
 //otp
 app.post("/otps", async (req, res) => {
